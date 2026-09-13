@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if git diff --cached --quiet; then
+  echo "No staged changes. Stage the work you created together first." >&2
+  exit 1
+fi
+
+read -r -p "Commit message: " message
+if [[ -z "${message// }" ]]; then
+  echo "A meaningful commit message is required." >&2
+  exit 1
+fi
+
+read -r -p "Contributor 1 name: " name_one
+read -r -p "Contributor 1 GitHub email: " email_one
+read -r -p "Contributor 2 name (leave blank if none): " name_two
+
+email_two=""
+if [[ -n "${name_two// }" ]]; then
+  read -r -p "Contributor 2 GitHub email: " email_two
+fi
+
+email_pattern='^[^[:space:]<>@]+@[^[:space:]<>@]+\.[^[:space:]<>@]+$'
+if [[ -z "${name_one// }" || ! "$email_one" =~ $email_pattern ]]; then
+  echo "Contributor 1 needs a name and valid GitHub-associated email." >&2
+  exit 1
+fi
+if [[ -n "${name_two// }" && ! "$email_two" =~ $email_pattern ]]; then
+  echo "Contributor 2 needs a valid GitHub-associated email." >&2
+  exit 1
+fi
+
+echo
+git diff --cached --stat
+echo
+echo "Co-authors:"
+echo "  $name_one <$email_one>"
+if [[ -n "${name_two// }" ]]; then
+  echo "  $name_two <$email_two>"
+fi
+echo
+read -r -p "Did these people genuinely contribute to the staged change? [y/N] " confirmed
+if [[ ! "$confirmed" =~ ^[Yy]$ ]]; then
+  echo "Commit cancelled."
+  exit 1
+fi
+
+args=(-m "$message" -m "Co-authored-by: $name_one <$email_one>")
+if [[ -n "${name_two// }" ]]; then
+  args+=(-m "Co-authored-by: $name_two <$email_two>")
+fi
+
+git commit "${args[@]}"
