@@ -12,9 +12,9 @@ if [[ -z "${message// }" ]]; then
   exit 1
 fi
 
-read -r -p "Contributor 1 name: " name_one
+read -r -p "Contributor 1 name (example: ihateSAS): " name_one
 read -r -p "Contributor 1 GitHub email: " email_one
-read -r -p "Contributor 2 name (leave blank if none): " name_two
+read -r -p "Contributor 2 name (leave blank if you only want one co-author): " name_two
 
 email_two=""
 if [[ -n "${name_two// }" ]]; then
@@ -32,13 +32,16 @@ if [[ -n "${name_two// }" && ! "$email_two" =~ $email_pattern ]]; then
 fi
 
 echo
+printf 'Staged changes:\n'
 git diff --cached --stat
+
 echo
-echo "Co-authors:"
-echo "  $name_one <$email_one>"
+printf 'Co-authors:\n'
+printf '  %s <%s>\n' "$name_one" "$email_one"
 if [[ -n "${name_two// }" ]]; then
-  echo "  $name_two <$email_two>"
+  printf '  %s <%s>\n' "$name_two" "$email_two"
 fi
+
 echo
 read -r -p "Did these people genuinely contribute to the staged change? [y/N] " confirmed
 if [[ ! "$confirmed" =~ ^[Yy]$ ]]; then

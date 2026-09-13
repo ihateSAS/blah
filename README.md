@@ -1,42 +1,81 @@
-# Co-authoring Changes
+# pair-
 
-## Paired commits
+A simple helper for creating paired commits that satisfy GitHub's co-authoring requirements for the Pair Extraordinaire badge.
 
-Use the pairing helper after two or more people have genuinely worked on a change together. It creates a standard commit from your staged changes and automatically adds GitHub's official `Co-authored-by` trailers.
+## What this does
+
+This repository gives you a script you can use to make a commit with proper `Co-authored-by` trailers for two contributors. That is the GitHub-supported way to show that two people worked together on the same change.
+
+## Why this matters
+
+To get the GitHub Pair Extraordinaire badge, you typically need to have commits where multiple people are credited as co-authors on the same commit, and the commit must be in the public contribution graph for both accounts.
+
+This repo is designed to make that easy for a pair such as:
+
+- ihateSAS
+- pyrrhonic
+
+## How to use it
+
+1. Clone this repo.
+2. Make sure your changes are staged:
 
 ```sh
-# Stage your changes
 git add <files-you-worked-on>
+```
 
-# Run the pairing helper
+3. Run the helper:
+
+```sh
 ./scripts/pair-commit
+```
 
-# Push to the remote repository
+4. Enter:
+
+- the commit message
+- contributor 1 name and GitHub-associated email
+- contributor 2 name and GitHub-associated email
+
+5. Confirm the commit.
+
+6. Push the commit:
+
+```sh
 git push
 ```
 
-### How it works
+## GitHub email format
 
-The helper walks you through a few quick steps before finalizing the commit:
+Use the email associated with each GitHub account. If you want to keep your email private, you can use your GitHub noreply email address, which usually looks like:
 
-* **Contributor Info:** It asks for each contributor's name and GitHub-associated email. 
-* **Privacy Support:** You can use a **private GitHub email** formatted as `ID+USERNAME@users.noreply.github.com`.
-* **Verification:** It displays a summary of your staged changes and requires confirmation before committing.
+```text
+12345678+username@users.noreply.github.com
+```
 
-### 💡 How to find your Private GitHub Email
+You can find that in GitHub Settings → Emails.
 
-If you want to keep your personal email private, you can find your unique GitHub ID and noreply email by following these steps:
+## Example
 
-1. Go to your GitHub **Settings** -> **Emails**.
-2. Scroll down to the **Keep my email addresses private** section.
-3. Copy the email address shown there (it will look like `12345678+username@users.noreply.github.com`).
+If you and your friend are working together, the helper will create a commit like this:
 
-*Note: This script never creates filler changes or stores contributor email addresses within the repository history.*
+```text
+Co-authored-by: ihateSAS <ihateSAS@users.noreply.github.com>
+Co-authored-by: pyrrhonic <pyrrhonic@users.noreply.github.com>
+```
 
-### Verify the attribution
+## Important notes
 
-After pushing, open the commit on GitHub and confirm that every contributor is
-shown as a co-author. If someone is missing, check that their trailer has the
-exact `Co-authored-by: Name <email>` format and that the email belongs to their
-GitHub account. When contributing through a pull request, verify that the merge
-method preserves the trailer in the final commit history.
+- Both accounts must be genuinely involved in the work.
+- The co-author trailers must be present in the final commit history.
+- Doing this in a public repository is the usual path for the badge.
+- The script only helps you generate the correct commit metadata; GitHub decides whether the badge is awarded based on their system.
+
+## Related resource
+
+This was inspired by the idea behind the GitHub badge setup used in projects like the one linked in your example:
+
+- https://github.com/SIMARSINGHRAYAT/Gitzo
+
+## Next step
+
+After you commit and push a few paired commits, open your GitHub profile and check whether the badge appears under your achievements area.
