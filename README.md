@@ -22,3 +22,10 @@ The helper walks you through a few quick steps before finalizing the commit:
 * **Verification:** It displays a summary of your staged changes and requires confirmation before committing.
 
 
+### 💡 How to find your Private GitHub Email
+If you want to keep your personal email private, you can find your unique GitHub ID and noreply email by following these steps:
+1. Go to your GitHub **Settings** -> **Emails**.
+2. Scroll down to the **Keep my email addresses private** section.
+3. Copy the email address shown there (it will look exactly like `12345678+username@://github.com`).
+
+*Note: This script never creates filler changes or stores contributor email addresses within the repository history.*
